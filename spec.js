@@ -41,8 +41,11 @@ describe('Protractor Demo App', function() {
 		this.getName = function(){
 			return $('h1.ng-binding');
 		};
-		this.getPic = function() {
-			console.log('Nothing here');
+		this.getPic = function(number) {
+			var phonePics = browser.findElement(By.xpath('//li[@class=\'ng-scope\']['+number+']'));
+			phonePics.click();
+			//var phonePics = $$('li.ng-scope');
+			//phonePics[number].click();
 		};
 	};
 
@@ -70,18 +73,20 @@ describe('Protractor Demo App', function() {
 		tmpPage.searchAdd('moto');
 		tmpPage.searchAdd('rola');
 		expect(tmpPage.getPhoneName(1)).toContain('Motorola');
-		tmpPage.searchDel(1);
-		expect(tmpPage.searchGet()).toEqual('motorol');
+		tmpPage.searchDel(8);
+		expect(tmpPage.searchGet()).toEqual('');
 	});
 	
-	/*
+	//*
 	it('should click on phone', function(){
 		var testPhoneName = 'Dell Streak 7'
 		var tmpPage = new MainPage;
 		//var tmp = tmpPage.getPhoneByName(testPhoneName);
 		var tmp = tmpPage.getPhoneByNumber(4);
 		//tmp.getName().getText().then(function(text){console.log(text)});
-		expect(tmp.getName().getText()).toEqual(testPhoneName);
+		tmp.getPic(2);
+		tmp.getPic(3);
+		expect(tmp.getName().getText()).toEqual(testPhoneName);		
 	})
 	//*/
 });
