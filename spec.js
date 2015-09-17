@@ -11,6 +11,22 @@ describe('Protractor Demo App', function() {
 			selectedPhone.click();
 			return new PhonePage;
 		};
+		this.searchAdd = function(keys){
+			$('input.ng-valid').sendKeys(keys);
+		}
+		this.searchDel = function(number){
+			if (Number.isInteger(number)){
+				for(var i = 0; i<number; i++){
+					$('input.ng-valid').sendKeys("\u0008");
+				}
+			}else{
+				console.log('Incorrect function input');
+			}
+		}
+		this.searchGet = function(){
+			//$('input.ng-valid').getAttribute("value").then(function(text){console.log(text)});
+			return $('input.ng-valid').getAttribute("value");
+		}
 	};
 	
 	function PhonePage () {
@@ -33,14 +49,26 @@ describe('Protractor Demo App', function() {
 		//var phones = $$('li, .thumbnail phone-listing ng-scope');
 		var phones = element.all(by.repeater('phone in phones | filter:query | orderBy:orderProp'));
 		expect(phones.count()).toEqual(20);
-	})
+	});
+	
+	it('should search', function(){
+		var tmpPage = new MainPage;
+		tmpPage.searchAdd('moto');
+		tmpPage.searchAdd('rola');
+		tmpPage.searchGet();
+		tmpPage.searchDel(7);
+		tmpPage.searchGet();
+		expect(tmpPage.searchGet()).toEqual('m');
+	});
+	
+	/*
 	it('should click on phone', function(){
 		var testPhoneName = 'Dell Streak 7'
 		var tmpPage = new MainPage;
-		
 		//var tmp = tmpPage.getPhoneByName(testPhoneName);
 		var tmp = tmpPage.getPhoneByNumber(4);
 		//tmp.getName().getText().then(function(text){console.log(text)});
 		expect(tmp.getName().getText()).toEqual(testPhoneName);
 	})
+	//*/
 });
