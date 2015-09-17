@@ -6,6 +6,11 @@ describe('Protractor Demo App', function() {
 			selectedPhone.click();
 			return new PhonePage;
 		};
+		this.getPhoneByNumber = function(number){
+			var selectedPhone = browser.findElement(By.xpath('//ul[@class=\'phones\']/li['+number+']/a[2]'));
+			selectedPhone.click();
+			return new PhonePage;
+		};
 	};
 	
 	function PhonePage () {
@@ -33,7 +38,8 @@ describe('Protractor Demo App', function() {
 		var testPhoneName = 'Dell Streak 7'
 		var tmpPage = new MainPage;
 		
-		var tmp = tmpPage.getPhoneByName(testPhoneName);
+		//var tmp = tmpPage.getPhoneByName(testPhoneName);
+		var tmp = tmpPage.getPhoneByNumber(4);
 		//tmp.getName().getText().then(function(text){console.log(text)});
 		expect(tmp.getName().getText()).toEqual(testPhoneName);
 	})
