@@ -13,19 +13,27 @@ describe('Protractor Demo App', function() {
 		};
 		this.searchAdd = function(keys){
 			$('input.ng-valid').sendKeys(keys);
-		}
+		};
 		this.searchDel = function(number){
 			if (Number.isInteger(number)){
 				for(var i = 0; i<number; i++){
 					$('input.ng-valid').sendKeys("\u0008");
-				}
+				};
 			}else{
 				console.log('Incorrect function input');
-			}
-		}
+			};
+		};
 		this.searchGet = function(){
 			//$('input.ng-valid').getAttribute("value").then(function(text){console.log(text)});
 			return $('input.ng-valid').getAttribute("value");
+		};
+		this.sortPhones = function(text){
+			//valid inputs: 'name' and 'age'
+			browser.findElement(By.css('select>option[value=\''+text+'\']')).click();
+		};
+		this.getPhoneName = function(number){
+			var selectedPhone = browser.findElement(By.xpath('//ul[@class=\'phones\']/li['+number+']/a[2]'));
+			return selectedPhone.getText();
 		}
 	};
 	
@@ -51,14 +59,19 @@ describe('Protractor Demo App', function() {
 		expect(phones.count()).toEqual(20);
 	});
 	
+	it('should order', function(){
+		var tmpPage = new MainPage;
+		tmpPage.sortPhones('name');
+		tmpPage.sortPhones('age');
+	})
+	
 	it('should search', function(){
 		var tmpPage = new MainPage;
 		tmpPage.searchAdd('moto');
 		tmpPage.searchAdd('rola');
-		tmpPage.searchGet();
-		tmpPage.searchDel(7);
-		tmpPage.searchGet();
-		expect(tmpPage.searchGet()).toEqual('m');
+		expect(tmpPage.getPhoneName(1)).toContain('Motorola');
+		tmpPage.searchDel(1);
+		expect(tmpPage.searchGet()).toEqual('motorol');
 	});
 	
 	/*
