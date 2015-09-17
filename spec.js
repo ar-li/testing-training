@@ -1,26 +1,21 @@
 // spec.js
 describe('Protractor Demo App', function() {
-  var firstNumber = element(by.model('first'));
-  var secondNumber = element(by.model('second'));
-  var goButton = element(by.id('gobutton'));
-  var latestResult = element(by.binding('latest'));
-  var history = element.all(by.repeater('result in memory'));
+	function PhonePage (name) {
+		this.phoneName = name;
+		this.getPic = function() {
+			console.log('Nothing here');
+		};
+	};
 
-  function add(a, b) {
-    firstNumber.sendKeys(a);
-    secondNumber.sendKeys(b);
-    goButton.click();
-  }
+	
+  it('should have a title', function() {
+    browser.get('http://angular.github.io/angular-phonecat/step-12/app/#/phones');
 
-  beforeEach(function() {
-    browser.get('http://juliemr.github.io/protractor-demo/');
+    expect(browser.getTitle()).toEqual('Google Phone Gallery');
   });
-
-  it('should have a history', function() {
-    add(1, 2);
-    add(3, 4);
-
-    expect(history.last().getText()).toContain('1 + 2');
-    expect(history.first().getText()).toContain('3 + 4'); // This is wrong!
-  });
+  
+  it('should find phones', function(){
+	  var phones = $$('li, .thumbnail phone-listing ng-scope');
+	  expect(phones.count()).toEqual(20);
+  })
 });
